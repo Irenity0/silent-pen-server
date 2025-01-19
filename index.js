@@ -27,6 +27,22 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
 
+    const blogCollection = client.db("SilentPen").collection("blogs");  
+
+    // blog api
+    app.get('/blogs', async(req,res) => {
+      const result = await blogCollection.find().toArray();
+      res.send(result);
+    })
+
+    app.post('/blogs', async (req, res) => {
+      const newBlog = req.body;
+      console.log('Adding new blog', newBlog)
+      
+      const result = await blogCollection.insertOne(newBlog);
+      res.send(result);
+      });
+
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
